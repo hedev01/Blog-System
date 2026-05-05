@@ -1579,6 +1579,22 @@
           }
         }
       },
+      "BlogSystem.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "BlogSystem.Domian": "1.0.0",
+          "BlogSystem.Infrastructure": "1.0.0",
+          "Microsoft.EntityFrameworkCore": "8.0.26",
+          "Microsoft.EntityFrameworkCore.SqlServer": "8.0.26"
+        },
+        "compile": {
+          "bin/placeholder/BlogSystem.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BlogSystem.Application.dll": {}
+        }
+      },
       "BlogSystem.Domian/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
@@ -4439,6 +4455,11 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "BlogSystem.Application/1.0.0": {
+      "type": "project",
+      "path": "../BlogSystem.Application/BlogSystem.Application.csproj",
+      "msbuildProject": "../BlogSystem.Application/BlogSystem.Application.csproj"
+    },
     "BlogSystem.Domian/1.0.0": {
       "type": "project",
       "path": "../BlogSystem.Domian/BlogSystem.Domian.csproj",
@@ -4452,6 +4473,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "BlogSystem.Application >= 1.0.0",
       "BlogSystem.Infrastructure >= 1.0.0",
       "Microsoft.EntityFrameworkCore >= 8.0.26",
       "Microsoft.EntityFrameworkCore.Design >= 8.0.26",
@@ -4487,6 +4509,9 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
+            "E:\\c#Project\\Blog System\\BlogSystem.Application\\BlogSystem.Application.csproj": {
+              "projectPath": "E:\\c#Project\\Blog System\\BlogSystem.Application\\BlogSystem.Application.csproj"
+            },
             "E:\\c#Project\\Blog System\\BlogSystem.Infrastructure\\BlogSystem.Infrastructure.csproj": {
               "projectPath": "E:\\c#Project\\Blog System\\BlogSystem.Infrastructure\\BlogSystem.Infrastructure.csproj"
             }

@@ -36,7 +36,9 @@ namespace BlogSystem.Application.UseCases
                     request.Content,
                     request.CoverImageUrl,
                     request.Status,
-                    request.AuthorId);
+                    request.AuthorId
+                    
+                    );
 
                 post = await _postRepository.Create(post);
                 var tagEntities = new List<Tag>();
@@ -71,6 +73,37 @@ namespace BlogSystem.Application.UseCases
                 throw;
             }
         }
+
+        public async Task<Result<GetPostResponse>> GetPostAsync(ListPostsQuery request)
+        {
+            var posts = await _postRepository.GetPostAsync(
+                request.PageNumber,
+                request.PageSize,
+                request.AuthorId,
+                request.SortOrder);
+
+            var totalCount = await _postRepository.CountPostsAsync(
+                request.AuthorId
+              );
+
+            var postDtos = posts.Select(p => new Post(p.Title, p.Content, p.CoverImageUrl, p.Status, p.AuthorId))
+                .ToList();
+
+            var pagedResult = new PagedResult<Post>
+            {
+                Items = postDtos,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize,
+                TotalCount = totalCount
+            };
+
+            return Result<GetPostResponse>.Success(
+                new GetPostResponse(pagedResult)
+            );
+        }
+
+
+
         private void Validate(CreatePostRequest req)
         {
             if (string.IsNullOrWhiteSpace(req.Title))

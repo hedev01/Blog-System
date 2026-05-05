@@ -17,7 +17,7 @@ builder.Services.AddScoped<ITagRepository , TagRepository>();
 builder.Services.AddScoped<PostUseCase>();
 builder.Services.AddDbContext<ApplicationDbContext>(option => {
     option
-        .UseSqlServer("Data Source=.;Initial catalog=Blog; Integrated Security=True;trustservercertificate=true");
+        .UseSqlServer("Data Source=.;Initial catalog=Blog; Integrated Security=True;trustservercertificate=true;MultipleActiveResultSets=True;");
 });
 
 var app = builder.Build();

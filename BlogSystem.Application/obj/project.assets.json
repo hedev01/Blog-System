@@ -1491,6 +1491,35 @@
             "rid": "win"
           }
         }
+      },
+      "BlogSystem.Domian/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "8.0.26",
+          "Microsoft.EntityFrameworkCore.SqlServer": "8.0.26"
+        },
+        "compile": {
+          "bin/placeholder/BlogSystem.Domian.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BlogSystem.Domian.dll": {}
+        }
+      },
+      "BlogSystem.Infrastructure/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "BlogSystem.Domian": "1.0.0",
+          "Microsoft.EntityFrameworkCore": "8.0.26",
+          "Microsoft.EntityFrameworkCore.SqlServer": "8.0.26"
+        },
+        "compile": {
+          "bin/placeholder/BlogSystem.Infrastructure.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BlogSystem.Infrastructure.dll": {}
+        }
       }
     }
   },
@@ -3993,10 +4022,22 @@
         "system.windows.extensions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "BlogSystem.Domian/1.0.0": {
+      "type": "project",
+      "path": "../BlogSystem.Domian/BlogSystem.Domian.csproj",
+      "msbuildProject": "../BlogSystem.Domian/BlogSystem.Domian.csproj"
+    },
+    "BlogSystem.Infrastructure/1.0.0": {
+      "type": "project",
+      "path": "../BlogSystem.Infrastructure/BlogSystem.Infrastructure.csproj",
+      "msbuildProject": "../BlogSystem.Infrastructure/BlogSystem.Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "BlogSystem.Domian >= 1.0.0",
+      "BlogSystem.Infrastructure >= 1.0.0",
       "Microsoft.EntityFrameworkCore >= 8.0.26",
       "Microsoft.EntityFrameworkCore.Design >= 8.0.26",
       "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.26",
@@ -4029,7 +4070,14 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "E:\\c#Project\\Blog System\\BlogSystem.Domian\\BlogSystem.Domian.csproj": {
+              "projectPath": "E:\\c#Project\\Blog System\\BlogSystem.Domian\\BlogSystem.Domian.csproj"
+            },
+            "E:\\c#Project\\Blog System\\BlogSystem.Infrastructure\\BlogSystem.Infrastructure.csproj": {
+              "projectPath": "E:\\c#Project\\Blog System\\BlogSystem.Infrastructure\\BlogSystem.Infrastructure.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
