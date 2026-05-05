@@ -1,3 +1,9 @@
+using BlogSystem.Application.UseCases;
+using BlogSystem.Domian.Interfaces;
+using BlogSystem.Infrastructure.Data;
+using BlogSystem.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,8 +12,17 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<ITagRepository , TagRepository>();
+builder.Services.AddScoped<PostUseCase>();
+builder.Services.AddDbContext<ApplicationDbContext>(option => {
+    option
+        .UseSqlServer("Data Source=.;Initial catalog=Blog; Integrated Security=True;trustservercertificate=true");
+});
 
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
