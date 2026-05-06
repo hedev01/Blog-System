@@ -149,3 +149,5 @@ E:\c#Project\Blog System\BlogSystem.Api\bin\Debug\net8.0\BlogSystem.Infrastructu
 E:\c#Project\Blog System\BlogSystem.Api\bin\Debug\net8.0\BlogSystem.Domian.pdb
 E:\c#Project\Blog System\BlogSystem.Api\bin\Debug\net8.0\BlogSystem.Application.dll
 E:\c#Project\Blog System\BlogSystem.Api\bin\Debug\net8.0\BlogSystem.Application.pdb
+E:\c#Project\Blog System\BlogSystem.Api\bin\Debug\net8.0\FluentValidation.dll
+E:\c#Project\Blog System\BlogSystem.Api\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll

@@ -1,7 +1,9 @@
+using BlogSystem.Application.DTO;
 using BlogSystem.Application.UseCases;
 using BlogSystem.Domian.Interfaces;
 using BlogSystem.Infrastructure.Data;
 using BlogSystem.Infrastructure.Repositories;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,11 +12,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+//builder.Services.AddValidatorsFromAssemblyContaining<CreatePostRequestValidator>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<ITagRepository , TagRepository>();
 builder.Services.AddScoped<PostUseCase>();
+builder.Services.AddScoped<IValidator<CreatePostRequest>, CreatePostRequestValidator>();
+builder.Services.AddScoped<IValidator<ListPostsRequest>, ListPostsQueryValidator>();
 builder.Services.AddDbContext<ApplicationDbContext>(option => {
     option
         .UseSqlServer("Data Source=.;Initial catalog=Blog; Integrated Security=True;trustservercertificate=true;MultipleActiveResultSets=True;");

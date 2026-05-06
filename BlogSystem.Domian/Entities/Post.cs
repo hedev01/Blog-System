@@ -25,6 +25,8 @@ namespace BlogSystem.Domian.Entities
         public ICollection<Tag> Tags { get; private set; } = new List<Tag>();
         public Post(string title, string content, string? coverImageUrl, string status, int authorId)
         {
+
+
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Title cannot be empty");
 

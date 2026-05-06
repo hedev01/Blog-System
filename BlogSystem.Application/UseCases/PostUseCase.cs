@@ -9,6 +9,9 @@ using BlogSystem.Domian.Entities;
 using BlogSystem.Domian.Interfaces;
 using BlogSystem.Domian.Model;
 using BlogSystem.Infrastructure.Data;
+using FluentValidation;
+using Microsoft.IdentityModel.Tokens;
+using ValidationException = System.ComponentModel.DataAnnotations.ValidationException;
 
 namespace BlogSystem.Application.UseCases
 {
@@ -17,12 +20,17 @@ namespace BlogSystem.Application.UseCases
         private readonly IPostRepository _postRepository;
         private readonly ITagRepository _tagRepository;
         private readonly ApplicationDbContext _context;
+        private readonly IValidator<CreatePostRequest> _validatorCreatePost;
+        private readonly IValidator<ListPostsRequest> _validatorListPostsQuery;
 
-        public PostUseCase(IPostRepository postRepository, ITagRepository tagRepository , ApplicationDbContext context)
+        public PostUseCase(IPostRepository postRepository, ITagRepository tagRepository , ApplicationDbContext context , IValidator<CreatePostRequest> validatorCreatePost , IValidator<ListPostsRequest> validatorListPostsQuery)
         {
             _postRepository = postRepository;
             _tagRepository = tagRepository;
             _context = context;
+            _validatorCreatePost = validatorCreatePost;
+            _validatorListPostsQuery = validatorListPostsQuery;
+
         }
 
         public async Task<Result<CreatePostResponse>> ExecuteAsync(CreatePostRequest request)
@@ -30,14 +38,20 @@ namespace BlogSystem.Application.UseCases
             var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                Validate(request);
+                var result = await _validatorCreatePost.ValidateAsync(request);
+
+                if (!result.IsValid)
+                {
+                    var errors = string.Join(" | ", result.Errors.Select(e => e.ErrorMessage));
+                    return Result<CreatePostResponse>.Failure(errors);
+                }
+
                 var post = new Post(
                     request.Title,
                     request.Content,
                     request.CoverImageUrl,
                     request.Status,
                     request.AuthorId
-                    
                     );
 
                 post = await _postRepository.Create(post);
@@ -74,8 +88,15 @@ namespace BlogSystem.Application.UseCases
             }
         }
 
-        public async Task<Result<GetPostResponse>> GetPostAsync(ListPostsQuery request)
+        public async Task<Result<PagedResult<ListPostResponse>>> GetPostAsync(ListPostsRequest request)
         {
+            var result = await _validatorListPostsQuery.ValidateAsync(request);
+            if (!result.IsValid)
+            {
+                var errors = string.Join(" | ", result.Errors.Select(e => e.ErrorMessage));
+                return Result<PagedResult<ListPostResponse>>.Failure(errors);
+            }
+
             var posts = await _postRepository.GetPostAsync(
                 request.PageNumber,
                 request.PageSize,
@@ -86,10 +107,18 @@ namespace BlogSystem.Application.UseCases
                 request.AuthorId
               );
 
-            var postDtos = posts.Select(p => new Post(p.Title, p.Content, p.CoverImageUrl, p.Status, p.AuthorId))
+            var postDtos = posts.Select(p => new ListPostResponse
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Content = p.Content,
+                    CoverImageUrl = p.CoverImageUrl,
+                    Status = p.Status,
+                    AuthorId = p.AuthorId
+                })
                 .ToList();
 
-            var pagedResult = new PagedResult<Post>
+            var pagedResult = new PagedResult<ListPostResponse>
             {
                 Items = postDtos,
                 PageNumber = request.PageNumber,
@@ -97,8 +126,8 @@ namespace BlogSystem.Application.UseCases
                 TotalCount = totalCount
             };
 
-            return Result<GetPostResponse>.Success(
-                new GetPostResponse(pagedResult)
+            return Result<PagedResult<ListPostResponse>>.Success(
+                pagedResult
             );
         }
 

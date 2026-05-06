@@ -38,25 +38,25 @@ namespace BlogSystem.Infrastructure.Repositories
                 "Fetching posts with PageNumber={PageNumber}, PageSize={PageSize}, authorId={AuthorId}, SortOrder={SortOrder}",
                 pageNumber, pageSize, authorId, sortOrder);
             IQueryable<Post> query = _context.Posts;
-           
-             
+
+            if (authorId != 0)
                 query = query.Where(p => p.AuthorId == authorId);
 
-                query = sortOrder == "desc" ? query.OrderBy(p => p.Id) : query.OrderByDescending(p => p.Id);
-                _logger.LogInformation("Sorting posts by Id {SortOrder}", sortOrder);
-                query = query
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize);
+            query = sortOrder == "desc" ? query.OrderBy(p => p.Id) : query.OrderByDescending(p => p.Id);
+            _logger.LogInformation("Sorting posts by Id {SortOrder}", sortOrder);
+            query = query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize);
 
-                _logger.LogInformation("Applying paging: Skip={Skip}, Take={Take}",
-                    (pageNumber - 1) * pageSize,
-                    pageSize);
+            _logger.LogInformation("Applying paging: Skip={Skip}, Take={Take}",
+                (pageNumber - 1) * pageSize,
+                pageSize);
 
-                var result = await query.ToListAsync();
+            var result = await query.ToListAsync();
 
-                _logger.LogInformation("Fetched {Count} posts from database", result.Count);
+            _logger.LogInformation("Fetched {Count} posts from database", result.Count);
 
-                return result;
+            return result;
 
         }
 

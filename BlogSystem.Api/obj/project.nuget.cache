@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "YNPFCGtWumGKdg8xQqWGfcs99eKgJZFVgALK8342TstnZ3qr5qpnQ1QLYXA4IMDdGO1sAnJNybx1xeqvTMhSmQ==",
+  "dgSpecHash": "lEfTdZKPNKLOjtiV0RVsQJ2ErTMtWWtFbvmF/J+7hyfph3foHzDHU+GTUdvWtys381yCd6tx74unPTdFpnPAAA==",
   "success": true,
   "projectFilePath": "E:\\c#Project\\Blog System\\BlogSystem.Api\\BlogSystem.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\PcKala.org\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\PcKala.org\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
+    "C:\\Users\\PcKala.org\\.nuget\\packages\\fluentvalidation\\8.6.3\\fluentvalidation.8.6.3.nupkg.sha512",
+    "C:\\Users\\PcKala.org\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\8.6.3\\fluentvalidation.dependencyinjectionextensions.8.6.3.nupkg.sha512",
     "C:\\Users\\PcKala.org\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\PcKala.org\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "C:\\Users\\PcKala.org\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.3.3\\microsoft.codeanalysis.analyzers.3.3.3.nupkg.sha512",
@@ -55,6 +57,7 @@
     "C:\\Users\\PcKala.org\\.nuget\\packages\\system.clientmodel\\1.0.0\\system.clientmodel.1.0.0.nupkg.sha512",
     "C:\\Users\\PcKala.org\\.nuget\\packages\\system.codedom\\4.4.0\\system.codedom.4.4.0.nupkg.sha512",
     "C:\\Users\\PcKala.org\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",
+    "C:\\Users\\PcKala.org\\.nuget\\packages\\system.componentmodel.annotations\\4.4.1\\system.componentmodel.annotations.4.4.1.nupkg.sha512",
     "C:\\Users\\PcKala.org\\.nuget\\packages\\system.composition\\6.0.0\\system.composition.6.0.0.nupkg.sha512",
     "C:\\Users\\PcKala.org\\.nuget\\packages\\system.composition.attributedmodel\\6.0.0\\system.composition.attributedmodel.6.0.0.nupkg.sha512",
     "C:\\Users\\PcKala.org\\.nuget\\packages\\system.composition.convention\\6.0.0\\system.composition.convention.6.0.0.nupkg.sha512",
