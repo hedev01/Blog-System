@@ -36,16 +36,27 @@ namespace BlogSystem.Infrastructure.Repositories
 
         public async Task AssignTagsToPostAsync(int postId, List<int> tagIds)
         {
-            var post = await _context.Posts.FindAsync(postId) ?? throw new Exception("Post Not Found");
+            var post = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == postId) ?? throw new Exception("Post Not Found");
 
             var tags = await _context.Tags.Where(entity => tagIds.Contains(entity.Id)).ToListAsync();
 
-            await _context.Entry(post).Collection(p => p.Tags).LoadAsync();
             foreach (var tag in tags)
                 post.Tags.Add(tag);
 
             await _context.SaveChangesAsync();
 
+        }
+
+        public List<string> GetPostTags(int postId)
+        {
+            var temp = new List<string>();
+            var tags = _context.Tags.Where(t => t.PostId == postId);
+            foreach (var item in tags)
+            {
+                temp.Add(item.Name);
+            }
+
+            return temp;
         }
     }
 }

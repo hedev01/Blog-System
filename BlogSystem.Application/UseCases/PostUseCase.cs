@@ -23,7 +23,7 @@ namespace BlogSystem.Application.UseCases
         private readonly IValidator<CreatePostRequest> _validatorCreatePost;
         private readonly IValidator<ListPostsRequest> _validatorListPostsQuery;
 
-        public PostUseCase(IPostRepository postRepository, ITagRepository tagRepository , ApplicationDbContext context , IValidator<CreatePostRequest> validatorCreatePost , IValidator<ListPostsRequest> validatorListPostsQuery)
+        public PostUseCase(IPostRepository postRepository, ITagRepository tagRepository, ApplicationDbContext context, IValidator<CreatePostRequest> validatorCreatePost, IValidator<ListPostsRequest> validatorListPostsQuery)
         {
             _postRepository = postRepository;
             _tagRepository = tagRepository;
@@ -66,8 +66,6 @@ namespace BlogSystem.Application.UseCases
                 await _tagRepository.AssignTagsToPostAsync(post.Id, tagEntities.Select(t => t.Id).ToList());
 
                 await transaction.CommitAsync();
-                //post.Id, post.Title, post.Slug, post.Status, post.CreatedAt,
-                //tagEntities.Select(t => t.Name
 
                 var Response = new CreatePostResponse()
                 {
@@ -76,7 +74,7 @@ namespace BlogSystem.Application.UseCases
                     Slug = post.Slug,
                     Status = post.Status,
                     CreatedAt = post.CreatedAt,
-                    Tags = tagEntities.Select(t =>  t.Name).ToList()
+                    Tags = tagEntities.Select(t => t.Name).ToList()
                 };
 
                 return Result<CreatePostResponse>.Success(Response);
@@ -103,19 +101,21 @@ namespace BlogSystem.Application.UseCases
                 request.AuthorId,
                 request.SortOrder);
 
+
             var totalCount = await _postRepository.CountPostsAsync(
                 request.AuthorId
               );
 
             var postDtos = posts.Select(p => new ListPostResponse
-                {
-                    Id = p.Id,
-                    Title = p.Title,
-                    Content = p.Content,
-                    CoverImageUrl = p.CoverImageUrl,
-                    Status = p.Status,
-                    AuthorId = p.AuthorId
-                })
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Content = p.Content,
+                CoverImageUrl = p.CoverImageUrl,
+                Status = p.Status,
+                AuthorId = p.AuthorId,
+                TagName = _tagRepository.GetPostTags(p.Id)
+            })
                 .ToList();
 
             var pagedResult = new PagedResult<ListPostResponse>
@@ -131,30 +131,5 @@ namespace BlogSystem.Application.UseCases
             );
         }
 
-
-
-        private void Validate(CreatePostRequest req)
-        {
-            if (string.IsNullOrWhiteSpace(req.Title))
-                throw new ArgumentException("Title is required");
-
-            if (string.IsNullOrWhiteSpace(req.Content))
-                throw new ArgumentException("Content is required");
-
-            if (req.Title.Length > 150)
-                throw new ArgumentException("Title is too long");
-
-            if (req.Status != "draft" && req.Status != "published")
-                throw new ArgumentException("Invalid status");
-
-            if (req.Tags.Count > 10)
-                throw new ArgumentException("Max 10 tags allowed");
-
-            if (!string.IsNullOrEmpty(req.CoverImageUrl) &&
-                !Uri.IsWellFormedUriString(req.CoverImageUrl, UriKind.Absolute))
-            {
-                throw new ArgumentException("Invalid coverImageUrl");
-            }
-        }
     }
 }

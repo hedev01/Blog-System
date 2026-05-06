@@ -11,6 +11,8 @@ namespace BlogSystem.Domian.Entities
         public int Id { get; private set; }
         public string Name { get; private set; }
         public string Slug { get; private set; }
+        public int PostId { get; private set; }
+        public ICollection<Post> Posts { get; private set; } = new List<Post>();
 
    //     private Tag() { }
 

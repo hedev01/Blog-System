@@ -8,12 +8,18 @@ namespace BlogSystem.Application.DTO
 {
     public class ListPostResponse
     {
-    //    p.Title, p.Content, p.CoverImageUrl, p.Status, p.AuthorId
-    public int Id { get; init; }
-    public string Title { get; init; }
-    public string Content { get; init; }
-    public string CoverImageUrl { get; init; }
-    public string Status { get; init; }
-    public int AuthorId { get; init; }
+        //    p.Title, p.Content, p.CoverImageUrl, p.Status, p.AuthorId
+        public int Id { get; init; }
+        public string Title { get; init; }
+        public string Content { get; init; }
+        public string CoverImageUrl { get; init; }
+        public string Status { get; init; }
+        public int AuthorId { get; init; }
+        public List<string> TagName
+        {
+            get
+            ;
+            init;
+        }
     }
 }

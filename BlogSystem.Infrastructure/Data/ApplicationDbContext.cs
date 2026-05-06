@@ -28,9 +28,27 @@ namespace BlogSystem.Infrastructure.Data
                 .IsRequired();
 
             modelBuilder.Entity<Post>()
-                .HasMany<Tag>()
-                .WithMany()
-                .UsingEntity(j => j.ToTable("PostTag"));
+                .HasMany(p => p.Tags)
+                .WithMany(t => t.Posts)
+                .UsingEntity<Dictionary<string, object>>(
+                    "PostTag",
+                    j => j
+                        .HasOne<Tag>()
+                        .WithMany()
+                        .HasForeignKey("TagId")
+                        .HasConstraintName("FK_PostTag_Tag_TagId")
+                        .OnDelete(DeleteBehavior.Cascade),
+                    j => j
+                        .HasOne<Post>()
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .HasConstraintName("FK_PostTag_Post_PostId")
+                        .OnDelete(DeleteBehavior.Cascade),
+                    j =>
+                    {
+                        j.HasKey("PostId", "TagId");
+                        j.ToTable("PostTag");
+                    });
             base.OnModelCreating(modelBuilder);
         }
     }
