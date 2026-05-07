@@ -28,5 +28,12 @@ namespace BlogSystem.Api.Controllers
             var result = await _useCase.GetPostAsync(new ListPostsRequest(pageNumber, PageSize, AuthorId, SortOrder));
             return Ok(result);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdatePostRequest request, [FromQuery] int id)
+        {
+            var result = await _useCase.UpdatePost(request, id);
+            return Ok(result);
+        }
     }
 }

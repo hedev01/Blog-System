@@ -46,6 +46,29 @@ namespace BlogSystem.Domian.Entities
             if (Status == "published")
                 PublishedAt = CreatedAt;
         }
+
+        public void Edit(string title, string content, string? coverImageUrl, string status, int authorId)
+        {
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentException("Title cannot be empty");
+
+            if (string.IsNullOrWhiteSpace(content))
+                throw new ArgumentException("Content cannot be empty");
+
+            Title = title;
+            Slug = GenerateSlug(title);
+            Content = content;
+            CoverImageUrl = coverImageUrl;
+            Status = status;
+            AuthorId = authorId;
+
+            
+            UpdatedAt = DateTime.UtcNow;
+
+            if (Status == "published")
+                PublishedAt = CreatedAt;
+        }
+
         private string GenerateSlug(string title)
         {
             return title.Trim().ToLower().Replace(" ", "-");

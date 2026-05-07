@@ -14,9 +14,15 @@ namespace BlogSystem.Domian.Entities
         public int PostId { get; private set; }
         public ICollection<Post> Posts { get; private set; } = new List<Post>();
 
-   //     private Tag() { }
+        //     private Tag() { }
 
         public Tag(string name)
+        {
+
+            Name = name.Trim();
+            Slug = Name.ToLower().Replace(" ", "-");
+        }
+        public void Rename(string name)
         {
             Name = name.Trim();
             Slug = Name.ToLower().Replace(" ", "-");

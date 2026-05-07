@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BlogSystem.Domian.Entities;
 
 namespace BlogSystem.Application.DTO
 {
@@ -15,7 +16,7 @@ namespace BlogSystem.Application.DTO
         public string CoverImageUrl { get; init; }
         public string Status { get; init; }
         public int AuthorId { get; init; }
-        public List<string> TagName
+        public List<Tag> TagName
         {
             get
             ;

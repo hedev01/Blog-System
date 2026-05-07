@@ -10,6 +10,7 @@ using BlogSystem.Domian.Interfaces;
 using BlogSystem.Domian.Model;
 using BlogSystem.Infrastructure.Data;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ValidationException = System.ComponentModel.DataAnnotations.ValidationException;
 
@@ -129,6 +130,44 @@ namespace BlogSystem.Application.UseCases
             return Result<PagedResult<ListPostResponse>>.Success(
                 pagedResult
             );
+        }
+
+        public async Task<Result<UpdatePostResponse>> UpdatePost(UpdatePostRequest request, int id)
+        {
+            var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var post = new Post(request.Title, request.Content, request.CoverImageUrl, request.Status, request.AuthorId);
+                post = await _postRepository.Update(post, id);
+
+                var tags = await _tagRepository.UpdateTags(id, request.Tags);
+
+                var postTags = _tagRepository.GetPostTags(id);
+                var tagIds = new List<int>();
+                foreach (var item in postTags)
+                {
+                    tagIds.Add(item.Id);
+                }
+
+                await _tagRepository.AssignTagsToPostAsync(id, tagIds);
+
+                await transaction.CommitAsync();
+
+                var response = new UpdatePostResponse()
+                {
+                    Id = id,
+                    Title = post.Title,
+                    Status = post.Status,
+                    UpdatedAt = DateTime.UtcNow,
+                    Tags = tags
+                };
+                return Result<UpdatePostResponse>.Success(response);
+            }
+            catch (Exception e)
+            {
+                await transaction.RollbackAsync();
+                return Result<UpdatePostResponse>.Failure(e.Message);
+            }
         }
 
     }

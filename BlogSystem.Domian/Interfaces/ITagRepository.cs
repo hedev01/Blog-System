@@ -12,6 +12,7 @@ namespace BlogSystem.Domian.Interfaces
     {
         Task<Tag> GetOrCreateByNameAsync(string name);
         Task AssignTagsToPostAsync(int postId, List<int> tagIds);
-        List<string> GetPostTags(int postId);
+        List<Tag> GetPostTags(int postId);
+        Task<List<string>> UpdateTags(int postId , List<string> tags);
     }
 }

@@ -47,16 +47,45 @@ namespace BlogSystem.Infrastructure.Repositories
 
         }
 
-        public List<string> GetPostTags(int postId)
+        public List<Tag> GetPostTags(int postId)
         {
-            var temp = new List<string>();
-            var tags = _context.Tags.Where(t => t.PostId == postId);
-            foreach (var item in tags)
+
+            var tags = _context.Tags.Where(t => t.PostId == postId).ToList();
+
+            return tags;
+        }
+
+        public async Task<List<string>> UpdateTags(int postId, List<string> tags)
+        {
+            var existingTags = await _context.Tags
+                .Where(t => t.PostId == postId)
+                .ToListAsync();
+
+
+            foreach (var oldTag in existingTags)
             {
-                temp.Add(item.Name);
+                if (!tags.Contains(oldTag.Name))
+                    _context.Tags.Remove(oldTag);
             }
 
-            return temp;
+
+            foreach (var tagName in tags)
+            {
+                var tag = existingTags.FirstOrDefault(t => t.Name == tagName);
+
+                if (tag == null)
+                {
+
+                    _context.Tags.Add(new Tag(tagName));
+                }
+                else
+                {
+                    tag.Rename(tagName);
+                }
+            }
+
+            await _context.SaveChangesAsync();
+            return tags;
         }
     }
 }

@@ -71,5 +71,22 @@ namespace BlogSystem.Infrastructure.Repositories
 
             return await query.CountAsync();
         }
+
+        public async Task<Post> Update(Post entity, int id)
+        {
+            var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+            if (post != null)
+            {
+                post.Edit(
+                    entity.Title,
+                    entity.Content,
+                    entity.CoverImageUrl,
+                    entity.Status,
+                    entity.AuthorId
+                    );
+                await _context.SaveChangesAsync();
+            }
+            return entity;
+        }
     }
 }
