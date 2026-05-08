@@ -60,7 +60,7 @@ namespace BlogSystem.Application.UseCases
 
                 foreach (var tagName in request.Tags)
                 {
-                    var tag = await _tagRepository.GetOrCreateByNameAsync(tagName);
+                    var tag = await _tagRepository.GetOrCreateByNameAsync(tagName , post.Id);
                     tagEntities.Add(tag);
                 }
 
@@ -143,13 +143,6 @@ namespace BlogSystem.Application.UseCases
                 var tags = await _tagRepository.UpdateTags(id, request.Tags);
 
                 var postTags = _tagRepository.GetPostTags(id);
-                var tagIds = new List<int>();
-                foreach (var item in postTags)
-                {
-                    tagIds.Add(item.Id);
-                }
-
-                await _tagRepository.AssignTagsToPostAsync(id, tagIds);
 
                 await transaction.CommitAsync();
 

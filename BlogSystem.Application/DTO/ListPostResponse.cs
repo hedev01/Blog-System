@@ -16,7 +16,7 @@ namespace BlogSystem.Application.DTO
         public string CoverImageUrl { get; init; }
         public string Status { get; init; }
         public int AuthorId { get; init; }
-        public List<Tag> TagName
+        public List<string> TagName
         {
             get
             ;

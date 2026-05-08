@@ -16,9 +16,9 @@ namespace BlogSystem.Domian.Entities
 
         //     private Tag() { }
 
-        public Tag(string name)
+        public Tag(string name , int postId)
         {
-
+            PostId = postId;
             Name = name.Trim();
             Slug = Name.ToLower().Replace(" ", "-");
         }
