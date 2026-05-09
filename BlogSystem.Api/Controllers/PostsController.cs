@@ -35,5 +35,12 @@ namespace BlogSystem.Api.Controllers
             var result = await _useCase.UpdatePost(request, id);
             return Ok(result);
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromQuery] int id)
+        {
+            var result = await _useCase.DeletePost(id);
+            return Ok(result);
+        }
     }
 }

@@ -14,5 +14,6 @@ namespace BlogSystem.Domian.Interfaces
         Task AssignTagsToPostAsync(int postId, List<int> tagIds);
         List<string> GetPostTags(int postId);
         Task<List<string>> UpdateTags(int postId , List<string> tags);
+        Task<bool> DeleteTag(int id);
     }
 }

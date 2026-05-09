@@ -60,7 +60,7 @@ namespace BlogSystem.Application.UseCases
 
                 foreach (var tagName in request.Tags)
                 {
-                    var tag = await _tagRepository.GetOrCreateByNameAsync(tagName , post.Id);
+                    var tag = await _tagRepository.GetOrCreateByNameAsync(tagName, post.Id);
                     tagEntities.Add(tag);
                 }
 
@@ -160,6 +160,27 @@ namespace BlogSystem.Application.UseCases
             {
                 await transaction.RollbackAsync();
                 return Result<UpdatePostResponse>.Failure(e.Message);
+            }
+        }
+
+        public async Task<Result<bool>> DeletePost(int id)
+        {
+            var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var taskResult = await _postRepository.Delete(id);
+                if (taskResult)
+                {
+                    await _tagRepository.DeleteTag(id);
+                }
+
+                await transaction.CommitAsync();
+                return Result<bool>.Success(true);
+            }
+            catch (Exception e)
+            {
+                await transaction.RollbackAsync();
+                return Result<bool>.Failure(e.Message);
             }
         }
 

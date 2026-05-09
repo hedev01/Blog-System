@@ -90,5 +90,14 @@ namespace BlogSystem.Infrastructure.Repositories
             await _context.SaveChangesAsync();
             return tags;
         }
+
+        public async Task<bool> DeleteTag(int id)
+        {
+            var findTagById = await _context.Tags.FindAsync(id);
+            if (findTagById == null) return false;
+            _context.Tags.Remove(findTagById);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

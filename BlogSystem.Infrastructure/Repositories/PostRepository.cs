@@ -88,5 +88,14 @@ namespace BlogSystem.Infrastructure.Repositories
             }
             return entity;
         }
+
+        public async Task<bool> Delete(int id)
+        {
+            var findPostById = await _context.Posts.FindAsync(id);
+            if (findPostById == null) return false;
+            _context.Posts.Remove(findPostById);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
