@@ -1,5 +1,6 @@
 using System.Text;
-using BlogSystem.Api;
+using BlogSystem.Api.DI;
+using BlogSystem.Api.Extensions;
 using BlogSystem.Application.DTO.Auth;
 using BlogSystem.Application.DTO.Features.Posts;
 using BlogSystem.Application.UseCases.Features.Auth;
@@ -21,7 +22,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 //builder.Services.AddValidatorsFromAssemblyContaining<CreatePostRequestValidator>();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+   c.OperationFilter<CustomHeaderOperationFilter>();
+});
 Dependencies.Inject(builder.Services);
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
