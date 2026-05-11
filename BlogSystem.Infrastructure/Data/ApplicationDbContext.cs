@@ -13,6 +13,7 @@ namespace BlogSystem.Infrastructure.Data
     {
         public DbSet<Post> Posts { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
@@ -21,6 +22,8 @@ namespace BlogSystem.Infrastructure.Data
         {
             modelBuilder.Entity<Post>().ToTable("Post");
             modelBuilder.Entity<Tag>().ToTable("Tag");
+
+            modelBuilder.Entity<User>().ToTable("Users");
 
             modelBuilder.Entity<Post>()
                 .Property(p => p.Title)

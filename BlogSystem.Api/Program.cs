@@ -1,9 +1,12 @@
 using System.Text;
+using BlogSystem.Application.DTO.Auth;
 using BlogSystem.Application.DTO.Features.Posts;
+using BlogSystem.Application.UseCases.Features.Auth;
 using BlogSystem.Application.UseCases.Features.Posts;
 using BlogSystem.Domian.Interfaces;
 using BlogSystem.Infrastructure.Data;
 using BlogSystem.Infrastructure.Repositories;
+using BlogSystem.Infrastructure.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -19,11 +22,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
-builder.Services.AddScoped<ITagRepository , TagRepository>();
+builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<PostUseCase>();
 builder.Services.AddScoped<IValidator<CreatePostRequest>, CreatePostRequestValidator>();
 builder.Services.AddScoped<IValidator<ListPostsRequest>, ListPostsQueryValidator>();
-builder.Services.AddDbContext<ApplicationDbContext>(option => {
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IValidator<RegisterRequest>, RegisterRequestValidator>();
+builder.Services.AddScoped<UserUseCase>();
+builder.Services.AddDbContext<ApplicationDbContext>(option =>
+{
     option
         .UseSqlServer("Data Source=.;Initial catalog=Blog; Integrated Security=True;trustservercertificate=true;MultipleActiveResultSets=True;");
 });
@@ -63,7 +71,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-app.UseAuthorization();  
+app.UseAuthorization();
 
 
 app.MapControllers();

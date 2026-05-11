@@ -52,6 +52,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.2.0, )"
+            },
             "FluentValidation": {
               "target": "Package",
               "version": "[8.6.3, )"
@@ -146,6 +150,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.2.0, )"
+            },
             "FluentValidation": {
               "target": "Package",
               "version": "[8.6.3, )"
@@ -244,6 +252,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.2.0, )"
+            },
             "FluentValidation": {
               "target": "Package",
               "version": "[8.6.3, )"

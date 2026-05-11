@@ -1,5 +1,6 @@
 ﻿using BlogSystem.Application.DTO.Features.Posts;
 using BlogSystem.Application.UseCases.Features.Posts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,7 @@ namespace BlogSystem.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(CreatePostRequest request)
         {
             var result = await _useCase.ExecuteAsync(request);
@@ -23,6 +25,7 @@ namespace BlogSystem.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetPosts([FromQuery] int pageNumber = 1, [FromQuery] int PageSize = 10, [FromQuery] int AuthorId = 1, [FromQuery] string SortOrder = "desc")
         {
             var result = await _useCase.GetPostAsync(new ListPostsRequest(pageNumber, PageSize, AuthorId, SortOrder));
@@ -30,6 +33,7 @@ namespace BlogSystem.Api.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> Update([FromBody] UpdatePostRequest request, [FromQuery] int id)
         {
             var result = await _useCase.UpdatePost(request, id);
@@ -37,6 +41,7 @@ namespace BlogSystem.Api.Controllers
         }
 
         [HttpDelete]
+        [Authorize]
         public async Task<IActionResult> Delete([FromQuery] int id)
         {
             var result = await _useCase.DeletePost(id);

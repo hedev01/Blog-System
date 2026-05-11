@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "9630iXWxYzz2pa1CY0r7EwEIXoZEZS+7l20hq508BrCVsAjc1ijcdI1i/8ALHmaGS34VIQnQDFItwEphVKS8jA==",
+  "dgSpecHash": "7TRipZ+RuO8YJIAYrsSSgcUtf4Ot7Ejge8WPwtCS+OTmJ1dbdv0BJyWNegNm208WNXV3+ywiAzx9GFKUoVePTA==",
   "success": true,
   "projectFilePath": "E:\\c#Project\\Blog System\\BlogSystem.Domian\\BlogSystem.Domian.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\PcKala.org\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\PcKala.org\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
+    "C:\\Users\\PcKala.org\\.nuget\\packages\\bcrypt.net-next\\4.2.0\\bcrypt.net-next.4.2.0.nupkg.sha512",
     "C:\\Users\\PcKala.org\\.nuget\\packages\\fluentvalidation\\8.6.3\\fluentvalidation.8.6.3.nupkg.sha512",
     "C:\\Users\\PcKala.org\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\8.6.3\\fluentvalidation.dependencyinjectionextensions.8.6.3.nupkg.sha512",
     "C:\\Users\\PcKala.org\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
@@ -80,12 +81,5 @@
     "C:\\Users\\PcKala.org\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
     "C:\\Users\\PcKala.org\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Error occurred while getting package vulnerability data: An error occurred while sending the request."
-    }
-  ]
+  "logs": []
 }
