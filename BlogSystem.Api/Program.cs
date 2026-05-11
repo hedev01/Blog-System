@@ -1,4 +1,5 @@
 using System.Text;
+using BlogSystem.Api;
 using BlogSystem.Application.DTO.Auth;
 using BlogSystem.Application.DTO.Features.Posts;
 using BlogSystem.Application.UseCases.Features.Auth;
@@ -21,15 +22,7 @@ builder.Services.AddControllers();
 //builder.Services.AddValidatorsFromAssemblyContaining<CreatePostRequestValidator>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IPostRepository, PostRepository>();
-builder.Services.AddScoped<ITagRepository, TagRepository>();
-builder.Services.AddScoped<PostUseCase>();
-builder.Services.AddScoped<IValidator<CreatePostRequest>, CreatePostRequestValidator>();
-builder.Services.AddScoped<IValidator<ListPostsRequest>, ListPostsQueryValidator>();
-builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IValidator<RegisterRequest>, RegisterRequestValidator>();
-builder.Services.AddScoped<UserUseCase>();
+Dependencies.Inject(builder.Services);
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
     option
