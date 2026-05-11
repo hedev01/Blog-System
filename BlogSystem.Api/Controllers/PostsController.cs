@@ -1,5 +1,5 @@
-﻿using BlogSystem.Application.DTO;
-using BlogSystem.Application.UseCases;
+﻿using BlogSystem.Application.DTO.Features.Posts;
+using BlogSystem.Application.UseCases.Features.Posts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

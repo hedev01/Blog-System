@@ -62,7 +62,7 @@ namespace BlogSystem.Domian.Entities
             Status = status;
             AuthorId = authorId;
 
-            
+
             UpdatedAt = DateTime.UtcNow;
 
             if (Status == "published")

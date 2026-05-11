@@ -53,6 +53,10 @@
               "target": "Package",
               "version": "[8.6.3, )"
             },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.26, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.26, )"
@@ -146,6 +150,10 @@
             "FluentValidation.DependencyInjectionExtensions": {
               "target": "Package",
               "version": "[8.6.3, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.26, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",

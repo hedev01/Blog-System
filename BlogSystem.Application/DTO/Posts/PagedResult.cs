@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlogSystem.Application.DTO
+namespace BlogSystem.Application.DTO.Features.Posts
 {
     public class PagedResult<T>
     {

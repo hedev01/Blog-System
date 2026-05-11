@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Azure;
 using BlogSystem.Application.DTO;
+using BlogSystem.Application.DTO.Features.Posts;
 using BlogSystem.Domian.Entities;
 using BlogSystem.Domian.Interfaces;
 using BlogSystem.Domian.Model;
@@ -14,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ValidationException = System.ComponentModel.DataAnnotations.ValidationException;
 
-namespace BlogSystem.Application.UseCases
+namespace BlogSystem.Application.UseCases.Features.Posts
 {
     public class PostUseCase
     {

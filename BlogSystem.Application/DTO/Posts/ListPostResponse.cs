@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BlogSystem.Domian.Entities;
 
-namespace BlogSystem.Application.DTO
+namespace BlogSystem.Application.DTO.Features.Posts
 {
     public class ListPostResponse
     {

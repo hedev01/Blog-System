@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentValidation;
 
-namespace BlogSystem.Application.DTO
+namespace BlogSystem.Application.DTO.Features.Posts
 {
     public record ListPostsRequest(
         int PageNumber = 1,

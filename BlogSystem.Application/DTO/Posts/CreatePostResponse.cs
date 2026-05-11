@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlogSystem.Application.DTO
+namespace BlogSystem.Application.DTO.Features.Posts
 {
     public class CreatePostResponse
     {
@@ -15,6 +15,6 @@ namespace BlogSystem.Application.DTO
         public DateTime CreatedAt { get; set; }
         public List<string> Tags { get; set; } = new();
 
-   
+
     }
 }

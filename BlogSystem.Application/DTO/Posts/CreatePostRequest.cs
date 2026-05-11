@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace BlogSystem.Application.DTO
+namespace BlogSystem.Application.DTO.Features.Posts
 {
     public class CreatePostRequest
     {
@@ -31,7 +31,7 @@ namespace BlogSystem.Application.DTO
                 .Must(url => Uri.IsWellFormedUriString(url, UriKind.Absolute))
                 .When(x => !string.IsNullOrWhiteSpace(x.CoverImageUrl))
                 .WithMessage("تصویر نامعتبر است.");
-            
+
 
 
         }

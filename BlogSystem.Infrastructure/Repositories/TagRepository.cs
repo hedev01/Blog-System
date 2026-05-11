@@ -19,13 +19,13 @@ namespace BlogSystem.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task<Tag> GetOrCreateByNameAsync(string name , int postId)
+        public async Task<Tag> GetOrCreateByNameAsync(string name, int postId)
 
         {
             var tag = await _context.Tags.FirstOrDefaultAsync(entity => entity.Name == name);
             if (tag == null)
             {
-                tag = new Tag(name , postId);
+                tag = new Tag(name, postId);
                 _context.Tags.Add(tag);
                 await _context.SaveChangesAsync();
             }
@@ -79,7 +79,7 @@ namespace BlogSystem.Infrastructure.Repositories
                 if (tag == null)
                 {
 
-                    _context.Tags.Add(new Tag(tagName , postId));
+                    _context.Tags.Add(new Tag(tagName, postId));
                 }
                 else
                 {

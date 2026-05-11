@@ -12,7 +12,7 @@ namespace BlogSystem.Domian.Interfaces
         Task<Post> Create(Post entity);
         Task<IReadOnlyList<Post>> GetPostAsync(int pageNumber, int pageSize, int tagId, string sortOrder);
         Task<int> CountPostsAsync(int id);
-        Task<Post> Update(Post entity ,int id);
+        Task<Post> Update(Post entity, int id);
         Task<bool> Delete(int id);
 
 

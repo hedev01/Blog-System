@@ -10,10 +10,10 @@ namespace BlogSystem.Domian.Interfaces
 {
     public interface ITagRepository
     {
-        Task<Tag> GetOrCreateByNameAsync(string name , int postId);
+        Task<Tag> GetOrCreateByNameAsync(string name, int postId);
         Task AssignTagsToPostAsync(int postId, List<int> tagIds);
         List<string> GetPostTags(int postId);
-        Task<List<string>> UpdateTags(int postId , List<string> tags);
+        Task<List<string>> UpdateTags(int postId, List<string> tags);
         Task<bool> DeleteTag(int id);
     }
 }
