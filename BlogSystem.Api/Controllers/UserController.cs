@@ -1,4 +1,5 @@
 ﻿using BlogSystem.Application.DTO.Auth;
+using BlogSystem.Application.DTO.User;
 using BlogSystem.Application.UseCases.Features.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,18 +18,24 @@ namespace BlogSystem.Api.Controllers
             _userCase = userCase;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Register(RegisterRequest request)
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             var result = await _userCase.Register(request);
-            if (result.Value.IsNullOrEmpty())
-            {
-                return BadRequest("متاسفانه کاربر جدید ساخته نشد.");
-            }
-            else
-            {
-                return Ok(result);
-            }
+
+            if (result.Value.IsNullOrEmpty()) return BadRequest("متاسفانه کاربر جدید ساخته نشد.");
+
+            return Ok(result);
+
+        }
+
+        [HttpGet("Login")]
+        public async Task<IActionResult> Login([FromQuery] LoginRequest request)
+        {
+            var result = await _userCase.Login(request);
+            if (result.ErrorMessage != null) return BadRequest(result.ErrorMessage);
+            if (result.Value.IsNullOrEmpty()) return BadRequest("متاسفانه توکن ساخته نشد.");
+            return Ok(result);
         }
     }
 }

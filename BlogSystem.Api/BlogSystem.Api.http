@@ -1,6 +1,32 @@
-@BlogSystem.Api_HostAddress = http://localhost:5161
+@BlogSystem.Api_HostAddress = https://localhost:44300
+@Token =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiaGVkZXYwMSIsImV4cCI6MTc3ODU1MDA5MywiaXNzIjoiTXlCbG9nQXBwIiwiYXVkIjoiTXlCbG9nVXNlcnMifQ.e39_1C5V0CNaj-0MPWxzFelv5LxXM0UIRY5QLtma6DY
 
-GET {{BlogSystem.Api_HostAddress}}/weatherforecast/
+### ایجاد پست جدید (Create)
+POST {{BlogSystem.Api_HostAddress}}/api/posts
+Content-Type: application/json
+Authorization: Bearer {{Token}}
+
+{
+  "title": "عنوان تستی",
+  "content": "محتوای تستی",
+  "authorId": 1
+}
+
+### دریافت لیست پست‌ها (Get Posts)
+GET {{BlogSystem.Api_HostAddress}}/api/posts?pageNumber=1&PageSize=10&AuthorId=1&SortOrder=desc
 Accept: application/json
+Authorization: Bearer {{Token}}
 
-###
+### ویرایش پست (Update)
+PUT {{BlogSystem.Api_HostAddress}}/api/posts?id=1
+Content-Type: application/json
+Authorization: Bearer {{Token}}
+
+{
+  "title": "عنوان ویرایش شده",
+  "content": "محتوای ویرایش شده"
+}
+
+### حذف پست (Delete)
+DELETE {{BlogSystem.Api_HostAddress}}/api/posts?id=1
+Authorization: Bearer {{Token}}

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BlogSystem.Domian.Entities;
 using BlogSystem.Domian.Interfaces;
 using BlogSystem.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogSystem.Infrastructure.Repositories
 {
@@ -22,6 +23,15 @@ namespace BlogSystem.Infrastructure.Repositories
             _context.Users.Add(entity);
             await _context.SaveChangesAsync();
             return entity;
+        }
+
+        public async Task<User?> Login(string username, string password)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+            if (user == null) return null;
+            bool isValidPassword = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
+            if (!isValidPassword) return null;
+            return user;
         }
     }
 }
