@@ -9,7 +9,9 @@ namespace BlogSystem.Domian.Interfaces
 {
     public interface IUserRepository
     {
-        Task<User> Register(User entity);
+        Task<User?> Register(User entity);
         Task<User?> Login(string username, string password);
+
+        Task<bool> CheckUserValid(Guid publicId);
     }
 }

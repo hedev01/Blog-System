@@ -24,14 +24,16 @@ namespace BlogSystem.Application.UseCases.Features.Posts
         private readonly ApplicationDbContext _context;
         private readonly IValidator<CreatePostRequest> _validatorCreatePost;
         private readonly IValidator<ListPostsRequest> _validatorListPostsQuery;
+        private readonly IUserRepository _userRepository;
 
-        public PostUseCase(IPostRepository postRepository, ITagRepository tagRepository, ApplicationDbContext context, IValidator<CreatePostRequest> validatorCreatePost, IValidator<ListPostsRequest> validatorListPostsQuery)
+        public PostUseCase(IPostRepository postRepository, ITagRepository tagRepository, ApplicationDbContext context, IValidator<CreatePostRequest> validatorCreatePost, IValidator<ListPostsRequest> validatorListPostsQuery, IUserRepository userRepository)
         {
             _postRepository = postRepository;
             _tagRepository = tagRepository;
             _context = context;
             _validatorCreatePost = validatorCreatePost;
             _validatorListPostsQuery = validatorListPostsQuery;
+            _userRepository = userRepository;
 
         }
 
@@ -47,6 +49,9 @@ namespace BlogSystem.Application.UseCases.Features.Posts
                     var errors = string.Join(" | ", result.Errors.Select(e => e.ErrorMessage));
                     return Result<CreatePostResponse>.Failure(errors);
                 }
+
+                bool userIsValid = await _userRepository.CheckUserValid(request.AuthorId);
+                if (userIsValid == false) return Result<CreatePostResponse>.Failure("کاربر یافت نشد.");
 
                 var post = new Post(
                     request.Title,
@@ -104,10 +109,6 @@ namespace BlogSystem.Application.UseCases.Features.Posts
                 request.SortOrder);
 
 
-            var totalCount = await _postRepository.CountPostsAsync(
-                request.AuthorId
-              );
-
             var postDtos = posts.Select(p => new ListPostResponse
             {
                 Id = p.Id,
@@ -125,7 +126,7 @@ namespace BlogSystem.Application.UseCases.Features.Posts
                 Items = postDtos,
                 PageNumber = request.PageNumber,
                 PageSize = request.PageSize,
-                TotalCount = totalCount
+                TotalCount = posts.Count
             };
 
             return Result<PagedResult<ListPostResponse>>.Success(
@@ -133,23 +134,25 @@ namespace BlogSystem.Application.UseCases.Features.Posts
             );
         }
 
-        public async Task<Result<UpdatePostResponse>> UpdatePost(UpdatePostRequest request, int id)
+        public async Task<Result<UpdatePostResponse>> UpdatePost(UpdatePostRequest request, int postId)
         {
             var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
+                var userValidForPost = await _postRepository.CheckPostIsValidUser(request.AuthorId , postId);
+                if (userValidForPost == false) return Result<UpdatePostResponse>.Failure("شما مجاز به ویرایش این مقاله نیستید.");
                 var post = new Post(request.Title, request.Content, request.CoverImageUrl, request.Status, request.AuthorId);
-                post = await _postRepository.Update(post, id);
+                post = await _postRepository.Update(post, postId);
 
-                var tags = await _tagRepository.UpdateTags(id, request.Tags);
+                var tags = await _tagRepository.UpdateTags(postId, request.Tags);
 
-                var postTags = _tagRepository.GetPostTags(id);
+               // var postTags = _tagRepository.GetPostTags(id);
 
                 await transaction.CommitAsync();
 
                 var response = new UpdatePostResponse()
                 {
-                    Id = id,
+                    Id = postId,
                     Title = post.Title,
                     Status = post.Status,
                     UpdatedAt = DateTime.UtcNow,

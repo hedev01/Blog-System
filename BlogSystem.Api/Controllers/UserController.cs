@@ -22,8 +22,9 @@ namespace BlogSystem.Api.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             var result = await _userCase.Register(request);
-
+            if (result.IsSuccess == false) return BadRequest(result.ErrorMessage);
             if (result.Value.IsNullOrEmpty()) return BadRequest("متاسفانه کاربر جدید ساخته نشد.");
+           
 
             return Ok(result);
 

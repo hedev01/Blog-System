@@ -10,7 +10,7 @@ namespace BlogSystem.Application.DTO.Features.Posts
     public record ListPostsRequest(
         int PageNumber = 1,
         int PageSize = 10,
-        int AuthorId = 1,
+        Guid AuthorId = default,
         string SortOrder = "desc" // "asc" | "desc"
     );
 

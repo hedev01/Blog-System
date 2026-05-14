@@ -32,15 +32,15 @@ namespace BlogSystem.Infrastructure.Repositories
 
         }
 
-        public async Task<IReadOnlyList<Post>> GetPostAsync(int pageNumber, int pageSize, int authorId, string sortOrder)
+
+        public async Task<IReadOnlyList<Post>> GetPostAsync(int pageNumber, int pageSize, Guid authorId, string sortOrder)
         {
             _logger.LogInformation(
                 "Fetching posts with PageNumber={PageNumber}, PageSize={PageSize}, authorId={AuthorId}, SortOrder={SortOrder}",
                 pageNumber, pageSize, authorId, sortOrder);
             IQueryable<Post> query = _context.Posts;
 
-            if (authorId != 0)
-                query = query.Where(p => p.AuthorId == authorId);
+            query = query.Where(p => p.AuthorId == authorId);
 
             query = sortOrder == "desc" ? query.OrderBy(p => p.Id) : query.OrderByDescending(p => p.Id);
             _logger.LogInformation("Sorting posts by Id {SortOrder}", sortOrder);
@@ -60,17 +60,18 @@ namespace BlogSystem.Infrastructure.Repositories
 
         }
 
-        public async Task<int> CountPostsAsync(int tagId)
-        {
-            IQueryable<Post> query = _context.Posts.AsNoTracking();
 
-            if (tagId > 0)
-            {
-                query = query.Where(post => post.Tags.Any(tag => tag.Id == tagId));
-            }
+        //public async Task<int> CountPostsAsync(int tagId)
+        //{
+        //    IQueryable<Post> query = _context.Posts.AsNoTracking();
 
-            return await query.CountAsync();
-        }
+        //    if (tagId > 0)
+        //    {
+        //        query = query.Where(post => post.Tags.Any(tag => tag.Id == tagId));
+        //    }
+
+        //    return await query.CountAsync();
+        //}
 
         public async Task<Post> Update(Post entity, int id)
         {
@@ -81,8 +82,7 @@ namespace BlogSystem.Infrastructure.Repositories
                     entity.Title,
                     entity.Content,
                     entity.CoverImageUrl,
-                    entity.Status,
-                    entity.AuthorId
+                    entity.Status
                     );
                 await _context.SaveChangesAsync();
             }
@@ -96,6 +96,14 @@ namespace BlogSystem.Infrastructure.Repositories
             _context.Posts.Remove(findPostById);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<bool> CheckPostIsValidUser(Guid authorId , int id)
+        {
+            _logger.LogInformation("Check Post Is Valid UserId {authorId}" , authorId);
+            var result = await _context.Posts.FirstOrDefaultAsync(p => p.AuthorId == authorId && p.Id == id);
+            _logger.LogInformation("User Status: {result}" , result);
+            return result != null;
         }
     }
 }

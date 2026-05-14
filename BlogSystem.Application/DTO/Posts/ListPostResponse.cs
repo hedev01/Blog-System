@@ -15,7 +15,7 @@ namespace BlogSystem.Application.DTO.Features.Posts
         public string Content { get; init; }
         public string CoverImageUrl { get; init; }
         public string Status { get; init; }
-        public int AuthorId { get; init; }
+        public Guid AuthorId { get; init; }
         public List<string> TagName
         {
             get

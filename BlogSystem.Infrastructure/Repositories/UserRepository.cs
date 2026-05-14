@@ -18,10 +18,14 @@ namespace BlogSystem.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task<User> Register(User entity)
+        public async Task<User?> Register(User entity)
         {
+            bool result = _context.Users.Any(u => u.Username == entity.Username);
+            if (result) return null;
             _context.Users.Add(entity);
             await _context.SaveChangesAsync();
+
+
             return entity;
         }
 
@@ -32,6 +36,12 @@ namespace BlogSystem.Infrastructure.Repositories
             bool isValidPassword = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
             if (!isValidPassword) return null;
             return user;
+        }
+
+        public async Task<bool> CheckUserValid(Guid publicId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.PublicId == publicId);
+            return user != null;
         }
     }
 }

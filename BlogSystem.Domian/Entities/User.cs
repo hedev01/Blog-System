@@ -11,6 +11,8 @@ namespace BlogSystem.Domian.Entities
 
         public int Id { get; set; }
 
+        public Guid PublicId { get; set; }
+
 
         public string Username { get; set; }
         public string Email { get; set; }
@@ -34,6 +36,7 @@ namespace BlogSystem.Domian.Entities
 
         public User(string username, string email, string password, string firstname, string lastname)
         {
+            PublicId = Guid.NewGuid();
             Username = username;
             Email = email;
             PasswordHash = password;

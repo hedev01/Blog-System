@@ -47,7 +47,8 @@ namespace BlogSystem.Application.UseCases.Features.Auth
                 var body = new User(request.Username, request.Email, hashPassword, request.FirstName, request.LastName);
 
 
-                await _userRepository.Register(body);
+                var user = await _userRepository.Register(body);
+                if(user == null) return Result<string>.Failure("نام کاربری قبلا ثبت شده است.");
                 await transaction.CommitAsync();
                 string token = _jwtTokenService.GenerateToken(request.Username);
                 return Result<string>.Success(token);

@@ -10,11 +10,11 @@ namespace BlogSystem.Domian.Interfaces
     public interface IPostRepository
     {
         Task<Post> Create(Post entity);
-        Task<IReadOnlyList<Post>> GetPostAsync(int pageNumber, int pageSize, int tagId, string sortOrder);
-        Task<int> CountPostsAsync(int id);
-        Task<Post> Update(Post entity, int id);
+        Task<IReadOnlyList<Post>> GetPostAsync(int pageNumber, int pageSize, Guid authorId, string sortOrder);
+        //Task<int> CountPostsAsync(int id);
+        Task<Post> Update(Post entity, int postId);
         Task<bool> Delete(int id);
-
+        Task<bool> CheckPostIsValidUser(Guid authorId , int id);
 
     }
 }

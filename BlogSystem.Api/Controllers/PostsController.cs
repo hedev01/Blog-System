@@ -26,7 +26,7 @@ namespace BlogSystem.Api.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetPosts([FromQuery] int pageNumber = 1, [FromQuery] int PageSize = 10, [FromQuery] int AuthorId = 1, [FromQuery] string SortOrder = "desc")
+        public async Task<IActionResult> GetPosts([FromQuery] int pageNumber = 1, [FromQuery] int PageSize = 10, [FromQuery] Guid AuthorId = default, [FromQuery] string SortOrder = "desc")
         {
             var result = await _useCase.GetPostAsync(new ListPostsRequest(pageNumber, PageSize, AuthorId, SortOrder));
             return Ok(result);

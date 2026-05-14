@@ -17,13 +17,13 @@ namespace BlogSystem.Domian.Entities
         public string Content { get; private set; }
         public string? CoverImageUrl { get; private set; }
         public string Status { get; private set; }
-        public int AuthorId { get; private set; }
+        public Guid AuthorId { get; private set; }
 
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
         public DateTime? PublishedAt { get; private set; }
         public ICollection<Tag> Tags { get; private set; } = new List<Tag>();
-        public Post(string title, string content, string? coverImageUrl, string status, int authorId)
+        public Post(string title, string content, string? coverImageUrl, string status, Guid authorId)
         {
 
 
@@ -47,7 +47,7 @@ namespace BlogSystem.Domian.Entities
                 PublishedAt = CreatedAt;
         }
 
-        public void Edit(string title, string content, string? coverImageUrl, string status, int authorId)
+        public void Edit(string title, string content, string? coverImageUrl, string status)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Title cannot be empty");
@@ -60,7 +60,6 @@ namespace BlogSystem.Domian.Entities
             Content = content;
             CoverImageUrl = coverImageUrl;
             Status = status;
-            AuthorId = authorId;
 
 
             UpdatedAt = DateTime.UtcNow;

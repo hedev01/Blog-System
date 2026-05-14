@@ -15,7 +15,7 @@ namespace BlogSystem.Application.DTO.Features.Posts
         public string? CoverImageUrl { get; set; }
         public string Status { get; set; }
         public List<string> Tags { get; set; } = new();
-        public int AuthorId { get; set; }
+        public Guid AuthorId { get; set; }
     }
 
     public class CreatePostRequestValidator : AbstractValidator<CreatePostRequest>
