@@ -23,6 +23,7 @@ namespace BlogSystem.Domian.Entities
         public DateTime UpdatedAt { get; private set; }
         public DateTime? PublishedAt { get; private set; }
         public ICollection<Tag> Tags { get; private set; } = new List<Tag>();
+        public ICollection<Comment> Comments { get; private set; } = new List<Comment>();
         public Post(string title, string content, string? coverImageUrl, string status, Guid authorId)
         {
 
