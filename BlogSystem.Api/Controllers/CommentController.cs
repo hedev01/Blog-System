@@ -31,5 +31,13 @@ namespace BlogSystem.Api.Controllers
                 return BadRequest(result.ErrorMessage);
             }
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetComment(int postId)
+        {
+            var result = await _commentUseCase.GetAsync(postId);
+            return Ok(result);
+        }
     }
 }

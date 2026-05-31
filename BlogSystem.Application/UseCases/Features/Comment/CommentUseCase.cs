@@ -47,5 +47,26 @@ namespace BlogSystem.Application.UseCases.Features.Comment
                 return Result<CommentResponse>.Failure(e.Message);
             }
         }
+
+        public async Task<Result<List<CommentResponse>>> GetAsync(int postId)
+        {
+            try
+            {
+                var result = await _commentRepository.Get(postId);
+
+                var response = result.Select(item => new CommentResponse
+                {
+                    Id = item.Id,
+                    PostId = item.PostId,
+                    Comment = item.Content
+                }).ToList();
+
+                return Result<List<CommentResponse>>.Success(response);
+            }
+            catch (Exception e)
+            {
+                return Result<List<CommentResponse>>.Failure(e.Message);
+            }
+        }
     }
 }

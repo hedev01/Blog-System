@@ -10,5 +10,6 @@ namespace BlogSystem.Domian.Interfaces
     public interface ICommentRepository
     {
         Task<Comment> Add(Comment entity);
+        Task<List<Comment>> Get(int postId);
     }
 }

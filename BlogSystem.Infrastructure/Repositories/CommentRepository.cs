@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BlogSystem.Domian.Entities;
 using BlogSystem.Domian.Interfaces;
 using BlogSystem.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogSystem.Infrastructure.Repositories
 {
@@ -23,6 +24,13 @@ namespace BlogSystem.Infrastructure.Repositories
             _context.Comments.Add(entity);
             await _context.SaveChangesAsync();
             return entity;
+        }
+
+        public async Task<List<Comment>> Get(int postId)
+        {
+            if (postId == 0) return await _context.Comments.AsNoTracking().ToListAsync();
+            var result = _context.Comments.AsNoTracking().Where(c => c.PostId == postId);
+            return await result.AsNoTracking().ToListAsync();
         }
     }
 }
