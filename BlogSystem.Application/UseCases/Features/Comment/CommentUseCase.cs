@@ -13,11 +13,13 @@ namespace BlogSystem.Application.UseCases.Features.Comment
     public class CommentUseCase
     {
         private readonly ICommentRepository _commentRepository;
+        private readonly IPostRepository _postRepository;
         private readonly ApplicationDbContext _context;
 
-        public CommentUseCase(ICommentRepository commentRepository, ApplicationDbContext context)
+        public CommentUseCase(ICommentRepository commentRepository, IPostRepository postRepository, ApplicationDbContext context)
         {
             _commentRepository = commentRepository;
+            _postRepository = postRepository;
             _context = context;
         }
 
@@ -26,6 +28,8 @@ namespace BlogSystem.Application.UseCases.Features.Comment
             var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
+                var result = _postRepository.PostExists(request.postId);
+                if (result == false) return Result<CommentResponse>.Failure("این پست وجود ندارد");
                 var comment = new Domian.Entities.Comment(request.postId, request.UserId, request.comment);
                 await _commentRepository.Add(comment);
                 await transaction.CommitAsync();

@@ -22,7 +22,14 @@ namespace BlogSystem.Api.Controllers
         public async Task<IActionResult> AddComment(CommentRequest request)
         {
             var result = await _commentUseCase.AddAsync(request);
-            return Ok(result);
+            if (result.IsSuccess.GetValueOrDefault())
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.ErrorMessage);
+            }
         }
     }
 }

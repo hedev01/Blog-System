@@ -98,12 +98,18 @@ namespace BlogSystem.Infrastructure.Repositories
             return true;
         }
 
-        public async Task<bool> CheckPostIsValidUser(Guid authorId , int id)
+        public async Task<bool> CheckPostIsValidUser(Guid authorId, int id)
         {
-            _logger.LogInformation("Check Post Is Valid UserId {authorId}" , authorId);
+            _logger.LogInformation("Check Post Is Valid UserId {authorId}", authorId);
             var result = await _context.Posts.FirstOrDefaultAsync(p => p.AuthorId == authorId && p.Id == id);
-            _logger.LogInformation("User Status: {result}" , result);
+            _logger.LogInformation("User Status: {result}", result);
             return result != null;
+        }
+
+        public bool PostExists(int postId)
+        {
+            var result = _context.Posts.Any(p => p.Id == postId);
+            return result;
         }
     }
 }

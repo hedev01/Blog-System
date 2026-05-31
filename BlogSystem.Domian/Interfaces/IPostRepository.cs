@@ -15,6 +15,7 @@ namespace BlogSystem.Domian.Interfaces
         Task<Post> Update(Post entity, int postId);
         Task<bool> Delete(int id);
         Task<bool> CheckPostIsValidUser(Guid authorId , int id);
+        bool PostExists(int postId);
 
     }
 }
