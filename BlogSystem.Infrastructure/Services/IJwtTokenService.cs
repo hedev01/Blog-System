@@ -9,5 +9,6 @@ namespace BlogSystem.Infrastructure.Services
     public interface IJwtTokenService
     {
         string GenerateToken(string userName);
+        string GenerateRefreshToken();
     }
 }

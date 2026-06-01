@@ -23,7 +23,7 @@ namespace BlogSystem.Api.Controllers
         {
             var result = await _userCase.Register(request);
             if (result.IsSuccess == false) return BadRequest(result.ErrorMessage);
-            if (result.Value.IsNullOrEmpty()) return BadRequest("متاسفانه کاربر جدید ساخته نشد.");
+            if (!string.IsNullOrEmpty(result.ErrorMessage)) return BadRequest("متاسفانه کاربر جدید ساخته نشد.");
            
 
             return Ok(result);
@@ -35,7 +35,7 @@ namespace BlogSystem.Api.Controllers
         {
             var result = await _userCase.Login(request);
             if (result.ErrorMessage != null) return BadRequest(result.ErrorMessage);
-            if (result.Value.IsNullOrEmpty()) return BadRequest("متاسفانه توکن ساخته نشد.");
+            if (!string.IsNullOrEmpty(result.ErrorMessage)) return BadRequest("متاسفانه توکن ساخته نشد.");
             return Ok(result);
         }
     }

@@ -21,16 +21,19 @@ namespace BlogSystem.Application.UseCases.Features.Auth
         private readonly IValidator<RegisterRequest> _registerValidator;
         private readonly IValidator<LoginRequest> _loginValidator;
         private readonly IJwtTokenService _jwtTokenService;
-        public UserUseCase(IUserRepository userRepository, ApplicationDbContext context, IValidator<RegisterRequest> registerValidator, IValidator<LoginRequest> loginValidator, IJwtTokenService jwtTokenService)
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
+        public UserUseCase(IUserRepository userRepository, ApplicationDbContext context, IValidator<RegisterRequest> registerValidator, IValidator<LoginRequest> loginValidator, IJwtTokenService jwtTokenService, IRefreshTokenRepository refreshTokenRepository)
         {
             _userRepository = userRepository;
             _context = context;
             _registerValidator = registerValidator;
             _loginValidator = loginValidator;
             _jwtTokenService = jwtTokenService;
+            _refreshTokenRepository = refreshTokenRepository;
+
         }
 
-        public async Task<Result<string>> Register(RegisterRequest request)
+        public async Task<Result<AuthResponse>> Register(RegisterRequest request)
         {
             var transaction = await _context.Database.BeginTransactionAsync();
             try
@@ -39,7 +42,7 @@ namespace BlogSystem.Application.UseCases.Features.Auth
                 if (!resultValidator.IsValid)
                 {
                     var errors = string.Join(" | ", resultValidator.Errors.Select(e => e.ErrorMessage));
-                    return Result<string>.Failure(errors);
+                    return Result<AuthResponse>.Failure(errors);
                 }
 
                 string hashPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
@@ -48,19 +51,35 @@ namespace BlogSystem.Application.UseCases.Features.Auth
 
 
                 var user = await _userRepository.Register(body);
-                if(user == null) return Result<string>.Failure("نام کاربری قبلا ثبت شده است.");
+                if (user == null) return Result<AuthResponse>.Failure("نام کاربری قبلا ثبت شده است.");
+                var refreshToken = _jwtTokenService.GenerateRefreshToken();
+                var refreshTokenEntity = new RefreshToken()
+                {
+                    Token = refreshToken,
+                    UserId = user.PublicId,
+                    CreatedAt = DateTime.UtcNow,
+                    ExpireAt = DateTime.UtcNow.AddDays(7),
+                    IsRevoked = false
+                };
+                await _refreshTokenRepository.AddAsync(refreshTokenEntity);
+
                 await transaction.CommitAsync();
                 string token = _jwtTokenService.GenerateToken(request.Username);
-                return Result<string>.Success(token);
+                var response = new AuthResponse()
+                {
+                    AccessToken = token,
+                    RefreshToken = refreshToken
+                };
+                return Result<AuthResponse>.Success(response);
             }
             catch (Exception e)
             {
                 await transaction.RollbackAsync();
-                return Result<string>.Failure(e.Message);
+                return Result<AuthResponse>.Failure(e.Message);
             }
         }
 
-        public async Task<Result<string>> Login(LoginRequest request)
+        public async Task<Result<AuthResponse>> Login(LoginRequest request)
         {
             try
             {
@@ -68,18 +87,33 @@ namespace BlogSystem.Application.UseCases.Features.Auth
                 if (!resultValidator.IsValid)
                 {
                     var errors = string.Join(" | ", resultValidator.Errors.Select(e => e.ErrorMessage));
-                    return Result<string>.Failure(errors);
+                    return Result<AuthResponse>.Failure(errors);
                 }
 
 
                 var login = await _userRepository.Login(request.username, request.password);
-                if (login == null) return Result<string>.Failure("نام کاربری یا کلمه عبور اشتباه است.");
+                if (login == null) return Result<AuthResponse>.Failure("نام کاربری یا کلمه عبور اشتباه است.");
                 string token = _jwtTokenService.GenerateToken(login.Username);
-                return Result<string>.Success(token);
+                var refreshToken = _jwtTokenService.GenerateRefreshToken();
+                var refreshTokenEntity = new RefreshToken()
+                {
+                    Token = refreshToken,
+                    UserId = login.PublicId,
+                    CreatedAt = DateTime.UtcNow,
+                    ExpireAt = DateTime.UtcNow.AddDays(7),
+                    IsRevoked = false
+                };
+                await _refreshTokenRepository.AddAsync(refreshTokenEntity);
+                var response = new AuthResponse()
+                {
+                    AccessToken = token,
+                    RefreshToken = refreshToken
+                };
+                return Result<AuthResponse>.Success(response);
             }
             catch (Exception e)
             {
-                return Result<string>.Failure(e.Message);
+                return Result<AuthResponse>.Failure(e.Message);
             }
         }
     }
