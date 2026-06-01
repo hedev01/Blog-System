@@ -20,14 +20,9 @@ namespace BlogSystem.Api.Controllers
         public async Task<IActionResult> Like(PostLikeRequest request)
         {
             var result = await _useCase.Like(request);
-            if (result.IsSuccess!.Value)
-            {
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest(result.ErrorMessage);
-            }
+            if (result.IsSuccess!.Value) return Ok(result);
+            else return BadRequest(result.ErrorMessage);
+
         }
     }
 }

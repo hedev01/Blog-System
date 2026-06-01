@@ -10,5 +10,7 @@ namespace BlogSystem.Domian.Interfaces
     public interface IPostLikeRepository
     {
         Task<PostLikes> Like(PostLikes entity);
+        Task<PostLikes?> GetByUserAndPost(Guid userId, int postId);
+        Task Update(PostLikes likes);
     }
 }

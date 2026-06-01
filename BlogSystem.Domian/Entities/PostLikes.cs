@@ -33,5 +33,10 @@ namespace BlogSystem.Domian.Entities
             PostId = postid;
             CreateAt = DateTime.UtcNow;
         }
+
+        public void ChangeLike(bool like)
+        {
+            Like = like;
+        }
     }
 }

@@ -25,17 +25,40 @@ namespace BlogSystem.Application.UseCases.Features.PostLike
         {
             try
             {
+                bool findPost = _postRepository.PostExists(request.PostId);
+                if (findPost == false) return Result<PostLikeResponse>.Failure("این پست وجود ندارد");
+                var existingLike =
+                    await _postLikeRepository.GetByUserAndPost(
+                        request.UserId,
+                        request.PostId);
 
-                bool result = _postRepository.PostExists(request.PostId);
-                if (result == false) return Result<PostLikeResponse>.Failure("این پست وجود ندارد.");
-                var like = new PostLikes(request.Like, request.UserId, request.PostId);
-                await _postLikeRepository.Like(like);
-                var response = new PostLikeResponse()
+                PostLikes likeEntity;
+
+                if (existingLike is null)
                 {
-                    Like = like.Like,
-                    PostId = like.PostId,
-                    UserId = like.UserId
+                    likeEntity = new PostLikes(
+                        request.Like,
+                        request.UserId,
+                        request.PostId);
+
+                    await _postLikeRepository.Like(likeEntity);
+                }
+                else
+                {
+                    existingLike.ChangeLike(request.Like);
+
+                    await _postLikeRepository.Update(existingLike);
+
+                    likeEntity = existingLike;
+                }
+
+                var response = new PostLikeResponse
+                {
+                    UserId = likeEntity.UserId,
+                    PostId = likeEntity.PostId,
+                    Like = likeEntity.Like
                 };
+
                 return Result<PostLikeResponse>.Success(response);
             }
             catch (Exception e)

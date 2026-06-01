@@ -61,6 +61,9 @@ namespace BlogSystem.Infrastructure.Data
                 .WithMany(p => p.Comments)
                 .HasForeignKey(c => c.PostId)
                 .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<PostLikes>()
+                .HasIndex(x => new { x.UserId, x.PostId })
+                .IsUnique();
             base.OnModelCreating(modelBuilder);
         }
     }
