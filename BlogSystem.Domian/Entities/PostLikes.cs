@@ -22,6 +22,16 @@ namespace BlogSystem.Domian.Entities
             get; set;
         }
 
-        public PostLikes() { }
+        private PostLikes()
+        {
+        }
+
+        public PostLikes(bool like, Guid userid, int postid)
+        {
+            Like = like;
+            UserId = userid;
+            PostId = postid;
+            CreateAt = DateTime.UtcNow;
+        }
     }
 }

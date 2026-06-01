@@ -3,6 +3,7 @@ using BlogSystem.Application.DTO.Features.Posts;
 using BlogSystem.Application.DTO.User;
 using BlogSystem.Application.UseCases.Features.Auth;
 using BlogSystem.Application.UseCases.Features.Comment;
+using BlogSystem.Application.UseCases.Features.PostLike;
 using BlogSystem.Application.UseCases.Features.Posts;
 using BlogSystem.Domian.Interfaces;
 using BlogSystem.Infrastructure.Repositories;
@@ -19,6 +20,7 @@ namespace BlogSystem.Api.DI
             service.AddScoped<IPostRepository, PostRepository>()
                 .AddScoped<ITagRepository, TagRepository>()
                 .AddScoped<ICommentRepository, CommentRepository>()
+                .AddScoped<IPostLikeRepository , PostLikeRepository>()
                 .AddScoped<IValidator<ListPostsRequest>, ListPostsQueryValidator>()
                 .AddScoped<IValidator<CreatePostRequest>, CreatePostRequestValidator>()
                 .AddScoped<IValidator<LoginRequest>, LoginRequestValidator>()
@@ -27,7 +29,8 @@ namespace BlogSystem.Api.DI
                 .AddScoped<IValidator<RegisterRequest>, RegisterRequestValidator>()
                 .AddScoped<PostUseCase>()
                 .AddScoped<UserUseCase>()
-                .AddScoped<CommentUseCase>();
+                .AddScoped<CommentUseCase>()
+                .AddScoped<PostLikeUseCase>();
         }
     }
 }
