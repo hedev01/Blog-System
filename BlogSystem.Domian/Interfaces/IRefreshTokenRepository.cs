@@ -10,5 +10,8 @@ namespace BlogSystem.Domian.Interfaces
     public interface IRefreshTokenRepository
     {
         Task AddAsync(RefreshToken entity);
+        Task<RefreshToken?> ValidRefreshToken(string refreshToken);
+
+        Task RevokeRefreshToken(string token);
     }
 }

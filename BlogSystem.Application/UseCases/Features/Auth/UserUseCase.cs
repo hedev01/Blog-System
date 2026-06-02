@@ -53,7 +53,7 @@ namespace BlogSystem.Application.UseCases.Features.Auth
                 var user = await _userRepository.Register(body);
                 if (user == null) return Result<AuthResponse>.Failure("نام کاربری قبلا ثبت شده است.");
                 var refreshToken = _jwtTokenService.GenerateRefreshToken();
-                var refreshTokenEntity = new RefreshToken()
+                var refreshTokenEntity = new Domian.Entities.RefreshToken()
                 {
                     Token = refreshToken,
                     UserId = user.PublicId,
@@ -95,7 +95,7 @@ namespace BlogSystem.Application.UseCases.Features.Auth
                 if (login == null) return Result<AuthResponse>.Failure("نام کاربری یا کلمه عبور اشتباه است.");
                 string token = _jwtTokenService.GenerateToken(login.Username);
                 var refreshToken = _jwtTokenService.GenerateRefreshToken();
-                var refreshTokenEntity = new RefreshToken()
+                var refreshTokenEntity = new Domian.Entities.RefreshToken()
                 {
                     Token = refreshToken,
                     UserId = login.PublicId,
