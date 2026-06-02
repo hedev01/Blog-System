@@ -1,5 +1,6 @@
 ﻿using BlogSystem.Application.DTO.Features.Posts;
 using BlogSystem.Application.UseCases.Features.Posts;
+using BlogSystem.Domian.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ namespace BlogSystem.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(CreatePostRequest request)
         {
             var result = await _useCase.ExecuteAsync(request);
@@ -33,7 +34,7 @@ namespace BlogSystem.Api.Controllers
         }
 
         [HttpPut]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromBody] UpdatePostRequest request, [FromQuery] int id)
         {
             var result = await _useCase.UpdatePost(request, id);
@@ -41,7 +42,7 @@ namespace BlogSystem.Api.Controllers
         }
 
         [HttpDelete]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete([FromQuery] int id)
         {
             var result = await _useCase.DeletePost(id);
