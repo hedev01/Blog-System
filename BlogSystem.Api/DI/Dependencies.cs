@@ -5,6 +5,7 @@ using BlogSystem.Application.UseCases.Features.Auth;
 using BlogSystem.Application.UseCases.Features.Comment;
 using BlogSystem.Application.UseCases.Features.PostLike;
 using BlogSystem.Application.UseCases.Features.Posts;
+using BlogSystem.Application.UseCases.Features.RefreshToken;
 using BlogSystem.Domian.Interfaces;
 using BlogSystem.Infrastructure.Repositories;
 using BlogSystem.Infrastructure.Services;
@@ -31,7 +32,8 @@ namespace BlogSystem.Api.DI
                 .AddScoped<PostUseCase>()
                 .AddScoped<UserUseCase>()
                 .AddScoped<CommentUseCase>()
-                .AddScoped<PostLikeUseCase>();
+                .AddScoped<PostLikeUseCase>()
+                .AddScoped<RefreshTokenUseCase>();
         }
     }
 }
