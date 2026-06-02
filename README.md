@@ -62,12 +62,12 @@ BlogSystem
 ├── Application Layer
 │   ├── UseCases
 │   ├── DTOs
-│   ├── Interfaces
 │
 ├── Domain Layer
 │   ├── Entities
 │   ├── Enums
-│   ├── Contracts
+│   ├── Interfaces
+│   ├── Models
 │
 ├── Infrastructure Layer
 │   ├── EF Core
