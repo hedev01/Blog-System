@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BlogSystem.Domian.Enums;
 
 namespace BlogSystem.Domian.Entities
 {
@@ -29,12 +30,14 @@ namespace BlogSystem.Domian.Entities
         public DateTime CreatedAt { get; set; }
         public DateTime? LastLoginAt { get; set; }
 
+        public Role Role { get; set; }
+
 
         private User()
         {
         }
 
-        public User(string username, string email, string password, string firstname, string lastname)
+        public User(string username, string email, string password, string firstname, string lastname , Role role)
         {
             PublicId = Guid.NewGuid();
             Username = username;
@@ -45,6 +48,7 @@ namespace BlogSystem.Domian.Entities
             IsActive = true;
             CreatedAt = DateTime.Now;
             LastLoginAt = CreatedAt;
+            Role = role;
         }
 
     }
