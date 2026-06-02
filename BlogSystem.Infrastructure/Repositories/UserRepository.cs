@@ -44,10 +44,12 @@ namespace BlogSystem.Infrastructure.Repositories
             return user != null;
         }
 
-        public async Task<string> GetUserName(Guid publicId)
+        public async Task<User?> GetUser(Guid publicId)
         {
-            var user = await _context.Users.Where(u => u.PublicId == publicId).Select(u => u.Username).SingleOrDefaultAsync();
-            return user ?? "";
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.PublicId == publicId);
+            if (user != null) return user;
+            return null;
+
         }
     }
 }

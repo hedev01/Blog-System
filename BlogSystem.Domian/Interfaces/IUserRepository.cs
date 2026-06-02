@@ -13,6 +13,6 @@ namespace BlogSystem.Domian.Interfaces
         Task<User?> Login(string username, string password);
 
         Task<bool> CheckUserValid(Guid publicId);
-        Task<string> GetUserName(Guid publicId);
+        Task<User?> GetUser(Guid publicId);
     }
 }
