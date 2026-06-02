@@ -24,7 +24,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-   c.OperationFilter<CustomHeaderOperationFilter>();
+    c.OperationFilter<CustomHeaderOperationFilter>();
 });
 Dependencies.Inject(builder.Services);
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
@@ -51,6 +51,34 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = jwtSettings["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(secretKey),
         ClockSkew = TimeSpan.Zero
+    };
+    options.Events = new JwtBearerEvents
+    {
+        OnChallenge = context =>
+        {
+            context.HandleResponse();
+
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            context.Response.ContentType = "application/json";
+
+            return context.Response.WriteAsync("""
+                                               {
+                                                   "message": "ابتدا وارد حساب کاربری شوید."
+                                               }
+                                               """);
+        },
+
+        OnForbidden = context =>
+        {
+            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            context.Response.ContentType = "application/json";
+
+            return context.Response.WriteAsync("""
+                                               {
+                                                   "message": "شما مجاز به انجام این عملیات نیستید."
+                                               }
+                                               """);
+        }
     };
 });
 builder.Services.AddAuthorization();
