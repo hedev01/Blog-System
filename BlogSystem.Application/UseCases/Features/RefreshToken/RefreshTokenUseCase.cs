@@ -40,14 +40,14 @@ namespace BlogSystem.Application.UseCases.Features.RefreshToken
 
                 if (!checkUserIsValid) return Result<RefreshTokenResponse>.Failure("کاربر معتبر نمی باشد.");
 
-                string userName = await _userRepository.GetUserName(findRefreshToken.UserId);
+                var user = await _userRepository.GetUser(findRefreshToken.UserId);
 
-                if (string.IsNullOrEmpty(userName)) return Result<RefreshTokenResponse>.Failure("کاربر یافت نشد.");
+                if (string.IsNullOrEmpty(user.Username)) return Result<RefreshTokenResponse>.Failure("کاربر یافت نشد.");
 
                 await _refreshTokenRepository.RevokeRefreshToken(refreshToken);
 
 
-                string accessToken = _jwtTokenService.GenerateToken(userName);
+                string accessToken = _jwtTokenService.GenerateToken(user.Username , user.PublicId , user.Role);
 
                 string refToken = _jwtTokenService.GenerateRefreshToken();
                 var refreshTokenEntity = new Domian.Entities.RefreshToken()
