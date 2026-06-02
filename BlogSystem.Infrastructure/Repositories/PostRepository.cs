@@ -39,8 +39,8 @@ namespace BlogSystem.Infrastructure.Repositories
                 "Fetching posts with PageNumber={PageNumber}, PageSize={PageSize}, authorId={AuthorId}, SortOrder={SortOrder}",
                 pageNumber, pageSize, authorId, sortOrder);
             IQueryable<Post> query = _context.Posts;
-
-            query = query.Where(p => p.AuthorId == authorId);
+            if (authorId != Guid.Empty)
+                query = query.Where(p => p.AuthorId == authorId);
 
             query = sortOrder == "desc" ? query.OrderBy(p => p.Id) : query.OrderByDescending(p => p.Id);
             _logger.LogInformation("Sorting posts by Id {SortOrder}", sortOrder);
