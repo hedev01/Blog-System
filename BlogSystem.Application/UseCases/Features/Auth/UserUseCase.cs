@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BlogSystem.Application.DTO.Auth;
 using BlogSystem.Application.DTO.User;
 using BlogSystem.Domian.Entities;
+using BlogSystem.Domian.Enums;
 using BlogSystem.Domian.Interfaces;
 using BlogSystem.Domian.Model;
 using BlogSystem.Infrastructure.Data;
@@ -47,7 +48,7 @@ namespace BlogSystem.Application.UseCases.Features.Auth
 
                 string hashPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
-                var body = new User(request.Username, request.Email, hashPassword, request.FirstName, request.LastName);
+                var body = new User(request.Username, request.Email, hashPassword, request.FirstName, request.LastName, Role.User);
 
 
                 var user = await _userRepository.Register(body);
@@ -64,7 +65,7 @@ namespace BlogSystem.Application.UseCases.Features.Auth
                 await _refreshTokenRepository.AddAsync(refreshTokenEntity);
 
                 await transaction.CommitAsync();
-                string token = _jwtTokenService.GenerateToken(request.Username);
+                string token = _jwtTokenService.GenerateToken(request.Username , user.PublicId , user.Role);
                 var response = new AuthResponse()
                 {
                     AccessToken = token,
@@ -93,7 +94,7 @@ namespace BlogSystem.Application.UseCases.Features.Auth
 
                 var login = await _userRepository.Login(request.username, request.password);
                 if (login == null) return Result<AuthResponse>.Failure("نام کاربری یا کلمه عبور اشتباه است.");
-                string token = _jwtTokenService.GenerateToken(login.Username);
+                string token = _jwtTokenService.GenerateToken(login.Username , login.PublicId , login.Role);
                 var refreshToken = _jwtTokenService.GenerateRefreshToken();
                 var refreshTokenEntity = new Domian.Entities.RefreshToken()
                 {
