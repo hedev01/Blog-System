@@ -35,7 +35,7 @@ namespace BlogSystem.Infrastructure.Services
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddHours(1),
+                expires: DateTime.Now.AddMinutes(1),
                 signingCredentials: creds
             );
             var generatedToken = new JwtSecurityTokenHandler().WriteToken(token);
