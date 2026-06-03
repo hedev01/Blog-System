@@ -40,6 +40,7 @@ namespace BlogSystem.Infrastructure.Services
                 signingCredentials: creds
             );
             var generatedToken = new JwtSecurityTokenHandler().WriteToken(token);
+
             return generatedToken;
         }
 
