@@ -12,6 +12,7 @@ using BlogSystem.Infrastructure.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,8 +30,18 @@ builder.Services.AddSwaggerGen(c =>
 Dependencies.Inject(builder.Services);
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
+    //option
+    //    .UseSqlServer("Data Source=.;Initial catalog=Blog; Integrated Security=True;trustservercertificate=true;MultipleActiveResultSets=True;");
     option
-        .UseSqlServer("Data Source=.;Initial catalog=Blog; Integrated Security=True;trustservercertificate=true;MultipleActiveResultSets=True;");
+        .UseSqlServer("Server=sqlserver,1433;Database=Blog;User Id=sa;Password=YourStrong!Pass123;TrustServerCertificate=True;" ,
+            optionsBuilder =>
+            {
+                optionsBuilder.EnableRetryOnFailure(
+                    maxRetryCount: 5,
+                    maxRetryDelay: TimeSpan.FromSeconds(10),
+                    errorNumbersToAdd: null);
+            });
+
 });
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
