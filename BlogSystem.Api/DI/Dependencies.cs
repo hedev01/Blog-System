@@ -11,6 +11,7 @@ using BlogSystem.Infrastructure.Repositories;
 using BlogSystem.Infrastructure.Services;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 
 namespace BlogSystem.Api.DI
 {
@@ -18,6 +19,12 @@ namespace BlogSystem.Api.DI
     {
         public static void Inject(IServiceCollection service)
         {
+            service.AddSingleton<IConnectionMultiplexer>(sp =>
+            {
+                var configuration = ConfigurationOptions.Parse("localhost:6379", true);
+                return ConnectionMultiplexer.Connect(configuration);
+            });
+
             service.AddScoped<IPostRepository, PostRepository>()
                 .AddScoped<ITagRepository, TagRepository>()
                 .AddScoped<ICommentRepository, CommentRepository>()
