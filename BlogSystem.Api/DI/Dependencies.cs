@@ -7,6 +7,7 @@ using BlogSystem.Application.UseCases.Features.PostLike;
 using BlogSystem.Application.UseCases.Features.Posts;
 using BlogSystem.Application.UseCases.Features.RefreshToken;
 using BlogSystem.Domian.Interfaces;
+using BlogSystem.Infrastructure.Cache;
 using BlogSystem.Infrastructure.Repositories;
 using BlogSystem.Infrastructure.Services;
 using FluentValidation;
@@ -25,7 +26,9 @@ namespace BlogSystem.Api.DI
                 return ConnectionMultiplexer.Connect(configuration);
             });
 
-            service.AddScoped<IPostRepository, PostRepository>()
+
+            service.AddSingleton<ICacheService , RedisCacheService>()
+                .AddScoped<IPostRepository, PostRepository>()
                 .AddScoped<ITagRepository, TagRepository>()
                 .AddScoped<ICommentRepository, CommentRepository>()
                 .AddScoped<IPostLikeRepository, PostLikeRepository>()

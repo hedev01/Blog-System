@@ -30,17 +30,17 @@ builder.Services.AddSwaggerGen(c =>
 Dependencies.Inject(builder.Services);
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
-    //option
-    //    .UseSqlServer("Data Source=.;Initial catalog=Blog; Integrated Security=True;trustservercertificate=true;MultipleActiveResultSets=True;");
     option
-        .UseSqlServer("Server=sqlserver,1433;Database=Blog;User Id=sa;Password=YourStrong!Pass123;TrustServerCertificate=True;" ,
-            optionsBuilder =>
-            {
-                optionsBuilder.EnableRetryOnFailure(
-                    maxRetryCount: 5,
-                    maxRetryDelay: TimeSpan.FromSeconds(10),
-                    errorNumbersToAdd: null);
-            });
+        .UseSqlServer("Data Source=.;Initial catalog=Blog; Integrated Security=True;trustservercertificate=true;MultipleActiveResultSets=True;");
+    //option
+    //    .UseSqlServer("Server=sqlserver,1433;Database=Blog;User Id=sa;Password=YourStrong!Pass123;TrustServerCertificate=True;" ,
+    //        optionsBuilder =>
+    //        {
+    //            optionsBuilder.EnableRetryOnFailure(
+    //                maxRetryCount: 5,
+    //                maxRetryDelay: TimeSpan.FromSeconds(10),
+    //                errorNumbersToAdd: null);
+    //        });
 
 });
 var jwtSettings = builder.Configuration.GetSection("Jwt");
