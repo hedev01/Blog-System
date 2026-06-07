@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System.Text.Json;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BlogSystem.Infrastructure.Repositories
 {
@@ -18,12 +19,13 @@ namespace BlogSystem.Infrastructure.Repositories
         private readonly ApplicationDbContext _context;
         private readonly ILogger<PostRepository> _logger;
         private readonly IDatabase _redis;
+        private readonly ICacheService _cacheService;
 
-        public PostRepository(ApplicationDbContext context, ILogger<PostRepository> logger , IConnectionMultiplexer redis)
+        public PostRepository(ApplicationDbContext context, ILogger<PostRepository> logger, ICacheService cacheService)
         {
             _context = context;
             _logger = logger;
-            _redis = redis.GetDatabase();
+            _cacheService = cacheService;
         }
         public async Task<Post> Create(Post entity)
 
@@ -43,22 +45,23 @@ namespace BlogSystem.Infrastructure.Repositories
             Guid authorId,
             string sortOrder)
         {
-            var cacheKey = GetCacheKey(pageNumber, pageSize, authorId, sortOrder);
+            string key =
+                $"posts:{pageNumber}:{pageSize}:{authorId}:{sortOrder}";
 
-            // 1. Check Redis first
-            var cachedData = await _redis.StringGetAsync(cacheKey);
+           
+            var cachedPosts =
+                await _cacheService.GetAsync<IReadOnlyList<Post>>(key);
 
-            if (!cachedData.IsNullOrEmpty)
+            if (cachedPosts is not null)
             {
-                _logger.LogInformation("Cache HIT for {CacheKey}", cacheKey);
-
-                return JsonSerializer.Deserialize<List<Post>>(cachedData);
+                _logger.LogInformation("Cache HIT: {Key}", key);
+                return cachedPosts;
             }
 
-            _logger.LogInformation("Cache MISS for {CacheKey}", cacheKey);
+            _logger.LogInformation("Cache MISS: {Key}", key);
 
-            // 2. DB query
-            IQueryable<Post> query = _context.Posts;
+       
+            IQueryable<Post> query = _context.Posts.AsNoTracking();
 
             if (authorId != Guid.Empty)
                 query = query.Where(p => p.AuthorId == authorId);
@@ -72,14 +75,11 @@ namespace BlogSystem.Infrastructure.Repositories
                 .Take(pageSize)
                 .ToListAsync();
 
-            // 3. Store in Redis (TTL = 2 minutes)
-            var json = JsonSerializer.Serialize(result);
 
-            await _redis.StringSetAsync(
-                cacheKey,
-                json,
-                TimeSpan.FromMinutes(2)
-            );
+            await _cacheService.SetAsync(
+                key,
+                result,
+                TimeSpan.FromMinutes(2));
 
             return result;
         }
@@ -135,9 +135,9 @@ namespace BlogSystem.Infrastructure.Repositories
             var result = _context.Posts.Any(p => p.Id == postId);
             return result;
         }
-        private string GetCacheKey(int pageNumber, int pageSize, Guid authorId, string sortOrder)
-        {
-            return $"posts:{pageNumber}:{pageSize}:{authorId}:{sortOrder}";
-        }
+        //private string GetCacheKey(int pageNumber, int pageSize, Guid authorId, string sortOrder)
+        //{
+        //    return $"posts:{pageNumber}:{pageSize}:{authorId}:{sortOrder}";
+        //}
     }
 }
