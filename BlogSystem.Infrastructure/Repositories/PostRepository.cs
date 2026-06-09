@@ -125,9 +125,10 @@ namespace BlogSystem.Infrastructure.Repositories
         public async Task<bool> CheckPostIsValidUser(Guid authorId, int id)
         {
             _logger.LogInformation("Check Post Is Valid UserId {authorId}", authorId);
-            var result = await _context.Posts.FirstOrDefaultAsync(p => p.AuthorId == authorId && p.Id == id);
-            _logger.LogInformation("User Status: {result}", result);
-            return result != null;
+            var exists = await _context.Posts
+                .AnyAsync(p => p.AuthorId == authorId && p.Id == id);
+            _logger.LogInformation("User Valid: {exists}", exists);
+            return exists;
         }
 
         public bool PostExists(int postId)
