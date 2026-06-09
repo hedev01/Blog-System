@@ -48,7 +48,7 @@ namespace BlogSystem.Infrastructure.Repositories
             string key =
                 $"posts:{pageNumber}:{pageSize}:{authorId}:{sortOrder}";
 
-           
+
             var cachedPosts =
                 await _cacheService.GetAsync<IReadOnlyList<Post>>(key);
 
@@ -60,7 +60,7 @@ namespace BlogSystem.Infrastructure.Repositories
 
             _logger.LogInformation("Cache MISS: {Key}", key);
 
-       
+
             IQueryable<Post> query = _context.Posts.AsNoTracking();
 
             if (authorId != Guid.Empty)
@@ -131,9 +131,9 @@ namespace BlogSystem.Infrastructure.Repositories
             return exists;
         }
 
-        public bool PostExists(int postId)
+        public async Task<bool> PostExists(int postId)
         {
-            var result = _context.Posts.Any(p => p.Id == postId);
+            var result = await _context.Posts.AnyAsync(p => p.Id == postId);
             return result;
         }
         //private string GetCacheKey(int pageNumber, int pageSize, Guid authorId, string sortOrder)
